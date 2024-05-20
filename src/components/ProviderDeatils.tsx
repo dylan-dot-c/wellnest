@@ -1,6 +1,6 @@
 // import React, { Component } from 'react'
 import { Text, StyleSheet, View } from "react-native";
-import { ProviderType } from "../app/screens/(main)/hisstory/providers/new";
+import { ProviderType } from "../app/screens/(providers)/NewProvider";
 import ComponentDivider from "./ComponentDivider";
 import { Feather } from "@expo/vector-icons";
 type Props = {

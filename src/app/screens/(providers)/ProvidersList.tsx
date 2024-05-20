@@ -1,11 +1,11 @@
-import React, { Component, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Text, StyleSheet, View } from "react-native";
 import { Link, Stack, router } from "expo-router";
 import { Feather } from "@expo/vector-icons";
-import { getProviders } from "../../../../utils/firebaseUtils";
-import { ProviderType } from "./new";
+import { getProviders } from "../../utils/firebaseUtils";
+import { ProviderType } from "./NewProvider";
 import { ListItem } from "@rneui/themed";
-import ProviderDetails from "../../../../../components/ProviderDeatils";
+import ProviderDetails from "../../../components/ProviderDeatils";
 
 type ExpandedProvider = ProviderType & {
     isExpanded: boolean;
@@ -13,7 +13,6 @@ type ExpandedProvider = ProviderType & {
 
 const Providers = () => {
     const [providers, setProviders] = useState<ExpandedProvider[]>([]);
-    const [expanded, setExpanded] = useState(false);
 
     useEffect(() => {
         const getData = async () => {
@@ -33,6 +32,7 @@ const Providers = () => {
         <View style={styles.container}>
             <Stack.Screen
                 options={{
+                    headerShown: true,
                     headerTitle: "My Providers",
                     headerTitleAlign: "center",
                     headerLeft: () => (
@@ -49,27 +49,24 @@ const Providers = () => {
                     headerRight: () => (
                         <View style={styles.iconFlex}>
                             <Feather name='share' size={24} />
-                            <Link href='./providers/new'>
+                            <Link href='/screens/NewProvider'>
                                 <Feather name='plus' size={24} />
                             </Link>
                         </View>
                     ),
                 }}
             />
-            <View>
-                {providers.map((provider, index) => {
-                    return <Text>{provider.officeName}</Text>;
-                })}
-            </View>
 
-            <View>
+            <View style={styles.accordionWrapper}>
                 {providers.map((provider, index) => {
                     return (
                         <ListItem.Accordion
+                            key={index}
                             content={
                                 <>
                                     <ListItem.Content>
-                                        <ListItem.Title>
+                                        <ListItem.Title
+                                            style={{ fontWeight: "bold" }}>
                                             {provider.type}
                                         </ListItem.Title>
                                     </ListItem.Content>
@@ -117,5 +114,8 @@ const styles = StyleSheet.create({
         flex: 1,
         paddingHorizontal: 16,
         paddingTop: 16,
+    },
+    accordionWrapper: {
+        gap: 10,
     },
 });

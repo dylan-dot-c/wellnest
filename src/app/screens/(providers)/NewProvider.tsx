@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { Text, StyleSheet, View, Pressable } from "react-native";
-import { Stack, Tabs } from "expo-router";
-import ComponentDivider from "../../../../../components/ComponentDivider";
-import TextInputIcon from "../../../../../components/TextInputIcon";
-import { addProviders } from "../../../../utils/firebaseUtils";
+import { Stack, Tabs, router } from "expo-router";
+import ComponentDivider from "../../../components/ComponentDivider";
+import TextInputIcon from "../../../components/TextInputIcon";
+import { addProviders } from "../../utils/firebaseUtils";
+import Toast from "react-native-root-toast";
 
 export type ProviderType = {
     type: string;
@@ -54,10 +55,13 @@ const NewProvider = () => {
         <View style={styles.container}>
             <Stack.Screen
                 options={{
+                    headerShown: true,
                     title: "Add A Provider",
                     headerTitleAlign: "center",
                     headerLeft: () => (
-                        <Text style={{ paddingLeft: 16, color: "#4B86ED" }}>
+                        <Text
+                            style={{ paddingLeft: 16, color: "#4B86ED" }}
+                            onPress={() => router.back()}>
                             Cancel
                         </Text>
                     ),
@@ -67,6 +71,10 @@ const NewProvider = () => {
                             onPress={() => {
                                 console.log(providerInfo);
                                 addProviders(providerInfo);
+                                Toast.show("New Provider Has been added", {
+                                    duration: Toast.durations.SHORT,
+                                });
+                                router.back();
                             }}>
                             Save
                         </Text>
@@ -87,6 +95,7 @@ const NewProvider = () => {
                             {providerTypes.map((item, index) => {
                                 return (
                                     <Pressable
+                                        key={index}
                                         style={styles.providerBubbles}
                                         onPress={() => {
                                             setProviderType(item);
